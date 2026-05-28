@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📋 Hướng Dẫn Cài Đặt Dự Án AquaSTEM</title>
+  <meta name="description" content="Tài liệu chi tiết hướng dẫn thiết lập hệ thống giám sát và tối ưu hóa môi trường nuôi trồng thủy sản AquaSTEM bằng Docker.">
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;650;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- CSS Link -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Scroll Progress Bar -->
+  <div class="progress-bar" id="progressBar"></div>
+
+  <!-- Mobile Hamburger Menu Button -->
+  <button class="hamburger" id="hamburgerBtn" aria-label="Toggle Navigation Menu">
+    <i data-lucide="menu"></i>
+  </button>
+  
+  <!-- Overlay for Mobile Menu -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="logo-icon">A</div>
+        <div>
+          <div class="sidebar-title">AquaSTEM Project</div>
+          <div class="sidebar-subtitle">Setup &amp; IoT Guide</div>
+        </div>
+      </div>
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="#section-1" class="active">
+          <i data-lucide="info" class="nav-icon"></i>
+          <span>§1. Tổng Quan &amp; Chuẩn Bị</span>
+          <span class="nav-badge">Bắt đầu</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#section-2">
+          <i data-lucide="git-branch" class="nav-icon"></i>
+          <span>§2. Cài Git &amp; VS Code</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#section-3">
+          <i data-lucide="box" class="nav-icon"></i>
+          <span>§3. Cài Docker &amp; WSL 2</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#section-4">
+          <i data-lucide="play-circle" class="nav-icon"></i>
+          <span>§4. Khởi Chạy Hệ Thống</span>
+          <span class="nav-badge">Docker</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#section-5">
+          <i data-lucide="cpu" class="nav-icon"></i>
+          <span>§5. Kết Nối Phần Cứng ESP32</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#section-6">
+          <i data-lucide="help-circle" class="nav-icon"></i>
+          <span>§6. Xử Lý Lỗi &amp; Tham Khảo</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    
+    <!-- Header Title -->
+    <header style="margin-bottom: 3rem;">
+      <h1 style="font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg, #0284c7, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem;">
+        Hướng Dẫn Cài Đặt &amp; Khởi Chạy Hệ Thống AquaSTEM
+      </h1>
+      <p style="font-size: 1.1rem; color: var(--text-secondary);">
+        Hệ thống IoT + AI giám sát và tối ưu hóa môi trường nuôi trồng thủy sản (STEM Education). Khởi chạy đồng bộ và nhanh chóng sử dụng nền tảng container Docker.
+      </p>
+    </header>
+
+    <!-- Section 1: Tổng Quan & Chuẩn Bị -->
+    <section id="section-1" class="section">
+      <div class="section-header">
+        <h2>
+          <span class="section-number">1</span>
+          Tổng Quan &amp; Chuẩn Bị Cấu Hình
+        </h2>
+        <p class="section-desc">Tìm hiểu kiến thức nền tảng và kiểm tra yêu cầu phần cứng trước khi thiết lập hệ thống AquaSTEM.</p>
+      </div>
+
+      <div class="card">
+        <h3>1. Giới Thiệu Dự Án &amp; Ứng Dụng Phương Trình Vi Phân (PTVP)</h3>
+        <p>AquaSTEM sử dụng phương trình vi phân để tính toán và dự báo lượng <strong>Oxy hòa tan (DO - Dissolved Oxygen)</strong> trong nước theo thời gian thực.</p>
+        
+        <div class="alert note">
+          <div class="alert-title">
+            <i data-lucide="brain" style="width: 18px; height: 18px;"></i>
+            Giải thích PTVP một cách trực quan (Dành cho học sinh)
+          </div>
+          <p><strong>Phương trình vi phân không hề đáng sợ, nó chỉ đơn giản là cách đo lường "Sự thay đổi":</strong></p>
+          <p>Hãy tưởng tượng lượng Oxy hòa tan giống như <em>mực nước trong bể cá</em>:</p>
+          <p><strong>Công thức tính đơn giản:</strong> <code class="code-inline">Oxy mới = Oxy cũ + (Lượng Nạp vào - Lượng Tiêu thụ) * Khoảng thời gian</code>.</p>
+          <p>Nhờ PTVP, hệ thống có thể dự đoán trước xem cá có bị ngạt khí hay không, từ đó tự động ra lệnh bật máy sục khí (Relay) kịp thời.</p>
+        </div>
+
+        <h3 style="margin-top: 2rem;">2. Yêu Cầu Cấu Hình Thiết Bị</h3>
+        <table class="checklist-table">
+          <thead>
+            <tr>
+              <th style="width: 25%;">Thành Phần</th>
+              <th style="width: 45%;">Thông Số Yêu Cầu</th>
+              <th style="width: 30%;">Trạng Thái</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Hệ Điều Hành</strong></td>
+              <td>Windows 10/11 (Home 21H2+, Pro, Enterprise) hoặc macOS</td>
+              <td><span class="check-icon">✓</span> Khuyên dùng Win 10/11</td>
+            </tr>
+            <tr>
+              <td><strong>Bộ nhớ RAM</strong></td>
+              <td>Tối thiểu 8GB (Khuyến nghị 16GB để chạy Docker tối ưu)</td>
+              <td><span class="check-icon">✓</span> Khuyên dùng</td>
+            </tr>
+            <tr>
+              <td><strong>Ổ Cứng trống</strong></td>
+              <td>SSD tối thiểu 10GB dung lượng trống</td>
+              <td><span class="check-icon">✓</span> Tải tài nguyên &amp; build</td>
+            </tr>
+            <tr>
+              <td><strong>Quyền Tài Khoản</strong></td>
+              <td>Quyền Quản trị viên (Administrator) để cấu hình ảo hóa &amp; Docker</td>
+              <td><span class="check-icon">✓</span> Bắt buộc</td>
+            </tr>
+            <tr>
+              <td><strong>Đường Truyền Mạng</strong></td>
+              <td>Tốc độ ổn định (cần tải khoảng 2-3GB thư viện/images ở lần đầu chạy)</td>
+              <td><span class="check-icon">✓</span> Quan trọng</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 2: Cài Đặt Git & VS Code -->
+    <section id="section-2" class="section">
+      <div class="section-header">
+        <h2>
+          <span class="section-number">2</span>
+          Cài Đặt Git &amp; Visual Studio Code
+        </h2>
+        <p class="section-desc">Cấu hình Git để tải mã nguồn từ GitHub và cài đặt trình soạn thảo VS Code.</p>
+      </div>
+
+      <div class="card">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Cài Đặt Git</h3>
+            <p>1. Truy cập trang tải chính thức và tải bộ cài đặt cho Windows: <a href="https://git-scm.com/downloads" target="_blank">Tải Git chính thức</a></p>
+            <p>2. Nhấp đúp chuột vào file vừa tải về để chạy trình cài đặt. Cứ bấm <strong>Next</strong> liên tục cho đến khi hoàn thành (giữ nguyên cấu hình mặc định).</p>
+            <p>3. <strong>Kiểm tra:</strong> Nhấp vào hộp tìm kiếm trên thanh Taskbar của Windows, gõ <code>PowerShell</code> -> Mở PowerShell lên và chạy lệnh sau để kiểm tra xem đã cài thành công chưa:</p>
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-lang">powershell</span>
+                <button class="copy-btn" onclick="copyCode(this)">
+                  <i data-lucide="copy" style="width:12px;height:12px;"></i>
+                  <span>Copy</span>
+                </button>
+              </div>
+              <pre>git --version</pre>
+            </div>
+            <p><em>Nếu hiển thị phiên bản Git (ví dụ: git version 2.x.x) là thành công!</em></p>
+            <div class="alert note">
+              <div class="alert-title">
+                <i data-lucide="info" style="width: 18px; height: 18px;"></i>
+                Cách làm nhanh không cần cài Git
+              </div>
+              Nếu bạn không sử dụng lệnh <code>git clone</code>, bạn có thể tải file mã nguồn dạng nén ZIP từ liên kết Google Drive ở Phần 4 rồi giải nén ra. Cách này giúp bạn bỏ qua bước cài đặt Git.
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Cài Đặt Trình Soạn Thảo VS Code</h3>
+            <p>Visual Studio Code (VS Code) là công cụ soạn thảo mã nguồn và quản lý dự án phổ biến nhất hiện nay.</p>
+            <p>1. Tải bộ cài đặt: <a href="https://code.visualstudio.com/" target="_blank">Tải VS Code cho Windows</a></p>
+            <p>2. Chạy file cài đặt. <strong>Lưu ý quan trọng:</strong> Tại màn hình cấu hình bổ sung, hãy tích chọn các ô:
+              <ul style="margin-left: 20px; color: var(--text-secondary); margin-bottom: 10px;">
+                <li><em>"Add 'Open with Code' action to Windows Explorer directory context menu"</em> (Để mở nhanh thư mục dự án)</li>
+                <li><em>"Add to PATH"</em> (Để chạy được lệnh code từ dòng lệnh)</li>
+              </ul>
+            </p>
+            <p>3. <strong>Cài đặt các Extension hỗ trợ học tập:</strong>
+              Mở VS Code lên, bấm vào biểu tượng <strong>Extensions</strong> (hình 4 ô vuông nhỏ ở thanh công cụ bên tay trái màn hình, hoặc bấm phím tắt <code>Ctrl + Shift + X</code>), tìm kiếm và bấm **Install** các gói sau:
+            </p>
+            <ul style="margin-left: 20px; color: var(--text-secondary); line-height: 1.8;">
+              <li><strong>Docker</strong> (do Microsoft phát hành): Dùng để theo dõi trạng thái hệ thống chạy ngầm.</li>
+              <li><strong>Prettier - Code formatter</strong>: Tự động căn lề và định dạng code đẹp mắt, gọn gàng.</li>
+              <li><strong>Vietnamese Language Pack</strong> (Tùy chọn): Nếu bạn muốn chuyển đổi giao diện VS Code sang tiếng Việt để dễ sử dụng.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Cài Đặt Docker Desktop & WSL 2 -->
+    <section id="section-3" class="section">
+      <div class="section-header">
+        <h2>
+          <span class="section-number">3</span>
+          Cài Đặt Docker Desktop &amp; WSL 2
+        </h2>
+        <p class="section-desc">Chuẩn bị nền tảng ảo hóa Docker để chạy đồng bộ hệ thống dịch vụ nhanh chóng.</p>
+      </div>
+
+      <div class="card">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Kích Hoạt Ảo Hóa Trong Windows (Virtualization)</h3>
+            <p>Để chạy được Docker (hệ thống chạy ngầm các dịch vụ), máy tính của bạn phải bật tính năng <strong>ảo hóa (Virtualization)</strong> trong CPU.</p>
+            <p><strong>Cách kiểm tra:</strong></p>
+            <ol style="margin-left: 20px; color: var(--text-secondary); line-height: 1.8;">
+              <li>Nhấn tổ hợp phím <code>Ctrl + Shift + Esc</code> để mở <strong>Task Manager</strong>.</li>
+              <li>Chọn tab <strong>Performance</strong> ở bên trái (hoặc phía trên) -> Chọn mục <strong>CPU</strong>.</li>
+              <li>Nhìn góc dưới cùng bên phải, tìm dòng <strong>Virtualization</strong>. Nếu thấy hiển thị là <strong>Enabled</strong> (Đã bật) là bạn đã sẵn sàng!</li>
+            </ol>
+            <div class="alert warning" style="margin-top: 10px;">
+              <div class="alert-title">
+                <i data-lucide="shield-alert" style="width: 18px; height: 18px;"></i>
+                Nếu Virtualization hiển thị là "Disabled" (Chưa bật)
+              </div>
+              Bạn cần khởi động lại máy tính, liên tục nhấn phím cấu hình BIOS (thường là <code>F2</code>, <code>F12</code>, hoặc <code>Del</code> tùy dòng máy) và tìm bật tính năng <strong>Intel Virtualization Technology (VT-x)</strong> hoặc <strong>SVM Mode (AMD)</strong> lên, sau đó lưu lại và khởi động vào Windows.
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Cài Đặt WSL 2 (Windows Subsystem for Linux)</h3>
+            <p>WSL 2 giúp chạy nhân hệ điều hành Linux trực tiếp trên Windows, đây là nền tảng bắt buộc để Docker hoạt động siêu nhẹ và nhanh.</p>
+            <p>1. Nhấp vào thanh tìm kiếm Windows -> Gõ chữ <code>PowerShell</code> -> Nhấp chuột phải vào biểu tượng **Windows PowerShell** -> Chọn <strong>Run as administrator</strong> (Chạy dưới quyền Admin).</p>
+            <p>2. Sao chép và dán lệnh sau vào cửa sổ PowerShell vừa hiện ra, rồi nhấn **Enter**:</p>
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-lang">powershell (admin)</span>
+                <button class="copy-btn" onclick="copyCode(this)">
+                  <i data-lucide="copy" style="width:12px;height:12px;"></i>
+                  <span>Copy</span>
+                </button>
+              </div>
+              <pre>wsl --install</pre>
+            </div>
+            <p>3. Chờ quá trình cài đặt tự động diễn ra hoàn tất. <strong>Sau đó, bạn BẮT BUỘC phải khởi động lại máy tính.</strong></p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Cài Đặt Và Khởi Chạy Docker Desktop</h3>
+            <p>1. Tải về trình cài đặt: <a href="https://www.docker.com/products/docker-desktop/" target="_blank">Tải Docker Desktop cho Windows</a></p>
+            <p>2. Chạy tệp tin cài đặt vừa tải về. Tại màn hình cài đặt đầu tiên, <strong>chú ý tích chọn ô</strong> <em>"Use WSL 2 instead of Hyper-V (recommended)"</em>.</p>
+            <p>3. Sau khi cài đặt hoàn tất, tìm biểu tượng **Docker Desktop** trên màn hình Desktop và mở nó lên. Nhấn đồng ý điều khoản sử dụng nếu có.</p>
+            <p>4. <strong>Kiểm tra trạng thái:</strong> Đợi khoảng 1-2 phút, nhìn vào góc dưới cùng bên trái cửa sổ Docker Desktop. Khi nào thấy **biểu tượng chú cá voi chuyển sang màu xanh lá cây** là Docker đã hoạt động hoàn toàn!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Khởi Chạy Hệ Thống Bằng Docker Compose -->
+    <section id="section-4" class="section">
+      <div class="section-header">
+        <h2>
+          <span class="section-number">4</span>
+          Khởi Chạy Hệ Thống Bằng Docker Compose
+        </h2>
+        <p class="section-desc">Cách thức nhanh nhất để dựng đồng thời MQTT Broker, Backend API và Frontend Dashboard chỉ bằng một câu lệnh.</p>
+      </div>
+
+      <div class="card">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Tải Mã Nguồn Và Truy Cập Thư Mục Dự Án</h3>
+            
+            <h4 style="margin-top: 10px; margin-bottom: 6px; font-size: 0.95rem; color: var(--text-primary);">Cách 1: Tải trực tiếp tệp nén ZIP từ Google Drive (Khuyên dùng cho người mới bắt đầu)</h4>
+            <p>Tải toàn bộ thư mục dự án qua liên kết dưới đây:</p>
+            <p style="margin-bottom: 12px; margin-top: 8px;">
+              <a href="https://drive.google.com/file/d/1YOsSQECmF0HU_8v7torX70ZvrpJ5sGgB/view?usp=sharing" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 600; background: rgba(2, 132, 199, 0.08); padding: 8px 16px; border-radius: var(--radius-sm); border: 1px dashed var(--accent); color: var(--accent); transition: all 0.2s;">
+                <i data-lucide="hard-drive" style="width:16px;height:16px;"></i>
+                <span>Tải tệp ZIP dự án từ Google Drive</span>
+              </a>
+            </p>
+            <p>Sau khi tải về, hãy nhấp chuột phải vào file ZIP -> Chọn <strong>Extract All...</strong> (Giải nén tất cả) để đưa các file mã nguồn ra một thư mục thường trên ổ đĩa máy tính (ví dụ: ổ <code>D:</code> hoặc <code>C:</code>).</p>
+            
+            <h4 style="margin-top: 18px; margin-bottom: 6px; font-size: 0.95rem; color: var(--text-primary);">TẠM THỜI DÙNG CÁCH 1 CHO ANH NHÉ, CÁCH 2 PHẢI HƯỚNG DẪN 1 CHÚT ĐỨA NÀO RẢNH TỰ NGHIÊN CỨU ĐC THÌ TỐT
+              <br>Cách 2: Tải bằng lệnh Git Clone (Nếu bạn đã có kinh nghiệm sử dụng Git).  </h4>
+            <p>Mở PowerShell thường, di chuyển tới thư mục muốn lưu dự án và chạy các dòng lệnh sau:</p>
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-lang">powershell</span>
+                <button class="copy-btn" onclick="copyCode(this)">
+                  <i data-lucide="copy" style="width:12px;height:12px;"></i>
+                  <span>Copy</span>
+                </button>
+              </div>
+              <pre>git clone https://github.com/duongbill/ptvp.git
+cd ptvp</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Mở Thư Mục Bằng VS Code Và Khởi Chạy Hệ Thống</h3>
+            <p>Đây là bước chạy lệnh để Docker tự động cài đặt và ghép nối các dịch vụ (Frontend, Backend, MQTT Broker) lại với nhau.</p>
+            
+            <p><strong>1. Mở thư mục bằng VS Code:</strong></p>
+            <ul style="margin-left: 20px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.8;">
+              <li>Mở phần mềm <strong>VS Code</strong> lên.</li>
+              <li>Chọn menu <strong>File</strong> ở trên cùng bên trái -> Chọn <strong>Open Folder...</strong> (Mở thư mục).</li>
+              <li>Tìm chọn thư mục dự án <code>ptvp</code> vừa được giải nén ra (hoặc clone về) và nhấn <strong>Select Folder</strong>.</li>
+            </ul>
+
+            <p><strong>2. Mở cửa sổ Terminal (dòng lệnh) trong VS Code:</strong></p>
+            <ul style="margin-left: 20px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.8;">
+              <li>Trên thanh menu trên cùng của VS Code, chọn <strong>Terminal</strong> -> Chọn <strong>New Terminal</strong> (Cửa sổ Terminal mới sẽ hiện ra ở cạnh dưới màn hình).</li>
+              <li><em>Hoặc nhấn phím tắt: <code>Ctrl + `</code> (dấu nháy đơn nằm dưới phím Esc trên bàn phím).</em></li>
+            </ul>
+
+            <p><strong>3. Chạy lệnh khởi dựng Docker Compose:</strong></p>
+            <p>Sao chép câu lệnh dưới đây, dán vào dòng lệnh Terminal trong VS Code và nhấn <strong>Enter</strong>:</p>
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-lang">terminal (VS Code)</span>
+                <button class="copy-btn" onclick="copyCode(this)">
+                  <i data-lucide="copy" style="width:12px;height:12px;"></i>
+                  <span>Copy</span>
+                </button>
+              </div>
+              <pre>docker-compose up -d --build</pre>
+            </div>
+
+            <div class="alert warning">
+              <div class="alert-title">
+                <i data-lucide="clock" style="width:18px;height:18px;"></i>
+                Lưu ý quan trọng về thời gian tải lần đầu
+              </div>
+              Lần đầu tiên chạy lệnh này, Docker sẽ cần tải các gói cài đặt cơ sở từ Internet (~2-3GB) nên sẽ mất khoảng <strong>5 đến 15 phút</strong> tùy thuộc vào tốc độ mạng của bạn. Các lần khởi chạy sau sẽ chỉ mất khoảng vài giây. Hãy kiên nhẫn chờ đến khi cửa sổ Terminal ngừng chạy chữ và hiển thị trạng thái hoàn tất thành công.
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Truy Cập Ứng Dụng</h3>
+            <p>Sau khi hệ thống khởi chạy thành công, bạn mở trình duyệt và truy cập các địa chỉ sau:</p>
+            
+            <table class="checklist-table" style="margin-top: 10px;">
+              <thead>
+                <tr>
+                  <th style="width: 40%;">Dịch Vụ</th>
+                  <th style="width: 35%;">Địa Chỉ (URL)</th>
+                  <th style="width: 25%;">Trạng Thái</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Frontend Dashboard</strong></td>
+                  <td><a href="http://localhost:3000" target="_blank">http://localhost:3000</a></td>
+                  <td><span class="check-icon">✓</span> Hoạt động</td>
+                </tr>
+                <tr>
+                  <td><strong>Backend API Docs</strong></td>
+                  <td><a href="http://localhost:8000/docs" target="_blank">http://localhost:8000/docs</a></td>
+                  <td><span class="check-icon">✓</span> Swagger UI</td>
+                </tr>
+                <tr>
+                  <td><strong>MQTT Broker</strong></td>
+                  <td><code>localhost:1883</code></td>
+                  <td><span class="check-icon">✓</span> Chạy ngầm</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Kết Nối Phần Cứng ESP32 -->
+    <section id="section-5" class="section">
+      <div class="section-header">
+        <h2>
+          <span class="section-number">5</span>
+          Kết Nối Phần Cứng ESP32
+        </h2>
+        <p class="section-desc">Cấu hình kết nối mạch ESP32 với máy tính và các lưu ý kỹ thuật khi sử dụng nguồn điện áp thấp dưới 5V.</p>
+      </div>
+
+      <div class="card">
+        <h3>1. Lưu Ý Kỹ Thuật Vận Hành</h3>
+        <div class="alert note">
+          <div class="alert-title">
+            <i data-lucide="info" style="width: 18px; height: 18px;"></i>
+            Thông tin kỹ thuật an toàn điện áp thấp
+          </div>
+          <ul style="margin-left: 20px;">
+            <li><strong>Nguồn cấp an toàn:</strong> Dự án sử dụng hoàn toàn nguồn điện áp thấp dưới 5V cấp trực tiếp qua cổng USB máy tính, tuyệt đối an toàn cho học sinh và người sử dụng.</li>
+            <li><strong>Tránh sụt áp &amp; đo sai lệch:</strong> Các cảm biến đo đạc (như đo pH, nhiệt độ, độ đục) nên được cấp nguồn ổn định đúng chân 5V/3V3 trên bo mạch ESP32 để đảm bảo độ chính xác của chỉ số.</li>
+            <li><strong>Tránh đoản mạch:</strong> Khi cắm dây nối các thiết bị đo, hãy đảm bảo các chân kim hoặc đầu nối không chạm chập trực tiếp vào nhau khi mạch đang chạy.</li>
+          </ul>
+        </div>
+
+        <h3 style="margin-top: 2rem;">2. Kết Nối ESP32 Vào Cổng COM3</h3>
+        <p>Do code firmware đã được nạp sẵn vào vi điều khiển ESP32, bạn không cần cài đặt Arduino IDE hay nạp lại code nữa. Hãy tiến hành cắm mạch vào cổng <strong>COM3</strong> trên máy tính theo hướng dẫn sau:</p>
+        
+        <ol style="margin-left: 20px; color: var(--text-secondary); line-height: 1.8;">
+          <li style="margin-bottom: 10px;">
+            <strong>Cắm kết nối phần cứng:</strong> Dùng cáp Micro-USB hoặc Type-C kết nối cổng USB của bo mạch ESP32 với cổng USB trên máy tính.
+          </li>
+          <li style="margin-bottom: 10px;">
+            <strong>Kiểm tra cổng kết nối (Device Manager):</strong>
+            <ul>
+              <li>Nhấp chuột phải vào nút <strong>Start</strong> (hoặc nhấn tổ hợp phím <code>Windows + X</code>) -> Chọn <strong>Device Manager</strong>.</li>
+              <li>Tìm nhóm thiết bị <strong>Ports (COM &amp; LPT)</strong> và mở rộng ra. Bạn sẽ thấy thiết bị có tên dạng <code>Silicon Labs CP210x USB to UART Bridge</code> hoặc <code>USB-SERIAL CH340</code> đi kèm số cổng COM ở cuối.</li>
+            </ul>
+          </li>
+          <li style="margin-bottom: 10px;">
+            <strong>Cấu hình đổi tên cổng thành COM3 (nếu cổng nhận diện khác COM3):</strong>
+            <p style="margin-top: 5px; margin-bottom: 5px;">Nếu máy tính nhận diện là cổng khác (ví dụ: COM4, COM5...), bạn cần đổi về <strong>COM3</strong> để tương thích với cấu hình mặc định của hệ thống:</p>
+            <ol style="list-style-type: lower-alpha; margin-left: 20px;">
+              <li>Nhấp chuột phải vào tên cổng COM đó trong Device Manager -> Chọn <strong>Properties</strong>.</li>
+              <li>Chọn tab <strong>Port Settings</strong> -> Nhấp vào nút <strong>Advanced...</strong> ở bên dưới.</li>
+              <li>Tại mục <strong>COM Port Number</strong>, nhấp chọn từ danh sách thả xuống cổng <strong>COM3</strong>.</li>
+              <li>Nhấn <strong>OK</strong> để lưu cấu hình.</li>
+            </ol>
+          </li>
+        </ol>
+
+        <div class="alert success" style="margin-top: 1.5rem;">
+          <div class="alert-title">
+            <i data-lucide="check-circle" style="width: 18px; height: 18px;"></i>
+            Hệ thống đã sẵn sàng vận hành!
+          </div>
+          Khi được cấp nguồn và nhận đúng cổng <strong>COM3</strong>, bo mạch ESP32 sẽ tự động chạy code đã nạp trước đó, thực hiện kết nối Wi-Fi, gửi các thông số cảm biến (pH, nhiệt độ, độ đục) lên Dashboard hiển thị thời gian thực.
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: Xử Lý Lỗi & Tham Khảo -->
+    <section id="section-6" class="section">
+      <div class="section-header">
+        <h2>
+          <span class="section-number">6</span>
+          Xử Lý Lỗi Thường Gặp &amp; Tham Khảo Nhanh
+        </h2>
+        <p class="section-desc">Giải pháp nhanh cho các sự cố kỹ thuật và danh sách câu lệnh thường trực trong quá trình vận hành Docker.</p>
+      </div>
+
+      <div class="accordion-container" style="margin-bottom: 2.5rem;">
+        
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <span class="error-tag">Error 1</span>
+            <span>Không thấy dữ liệu cảm biến thay đổi trên màn hình Dashboard</span>
+            <i data-lucide="chevron-down" class="accordion-arrow"></i>
+          </button>
+          <div class="accordion-body">
+            <p style="margin-top: 12px;"><strong>Khắc phục:</strong></p>
+            <p>Kiểm tra cấu hình biến môi trường trong file <code>docker-compose.yml</code> của dự án:</p>
+            <ul style="margin-left: 20px;">
+              <li>Nếu <strong>không dùng phần cứng thật (chạy mô phỏng)</strong>: đảm bảo biến <code>SIMULATION_ENABLED</code> có giá trị là <code>true</code>.</li>
+              <li>Nếu <strong>dùng phần cứng thật</strong>: đảm bảo ESP32 đã kết nối Wifi và gửi được tin nhắn MQTT thành công đến địa chỉ IP của máy tính (Broker cổng 1883).</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <span class="error-tag">Error 2</span>
+            <span>Lỗi cổng <code>3000</code> hoặc <code>8000</code> trên máy chủ bị chiếm dụng (Address already in use)</span>
+            <i data-lucide="chevron-down" class="accordion-arrow"></i>
+          </button>
+          <div class="accordion-body">
+            <p style="margin-top: 12px;"><strong>Khắc phục:</strong></p>
+            <p>Mở file <code>docker-compose.yml</code> ở thư mục gốc của dự án, tìm dịch vụ bị báo lỗi cổng và thay đổi cổng ánh xạ bên trái:</p>
+            <ul style="margin-left: 20px;">
+              <li>Ví dụ đối với frontend: đổi <code>3000:3000</code> thành <code>3002:3000</code>. Khi đó bạn sẽ truy cập Dashboard bằng địa chỉ <a href="http://localhost:3002" target="_blank">http://localhost:3002</a>.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <span class="error-tag">Error 3</span>
+            <span>Lỗi PowerShell chặn thực thi file script quản lý Docker <code>./docker.ps1</code></span>
+            <i data-lucide="chevron-down" class="accordion-arrow"></i>
+          </button>
+          <div class="accordion-body">
+            <p style="margin-top: 12px;"><strong>Khắc phục:</strong> Mở PowerShell bằng quyền Administrator và chạy lệnh cấp quyền tạm thời dưới đây trước khi gọi script:</p>
+            <div class="code-block">
+              <pre>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <span class="error-tag">Error 4</span>
+            <span>Docker hết dung lượng lưu trữ ảo (<code>no space left on device</code>)</span>
+            <i data-lucide="chevron-down" class="accordion-arrow"></i>
+          </button>
+          <div class="accordion-body">
+            <p style="margin-top: 12px;"><strong>Khắc phục:</strong> Chạy lệnh dọn rác hệ thống Docker để thu hồi dung lượng ổ cứng:</p>
+            <div class="code-block">
+              <pre>docker system prune -a --volumes</pre>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="card">
+        <h3>Bảng Lệnh Nhanh Docker &amp; Quản Trị</h3>
+        <table class="ref-table">
+          <thead>
+            <tr>
+              <th style="width: 45%;">Lệnh Thực Hiện</th>
+              <th style="width: 55%;">Chức Năng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="cmd-cell">docker-compose up -d --build</td>
+              <td>Khởi chạy toàn bộ hệ thống AquaSTEM ngầm và tự động cập nhật code mới.</td>
+            </tr>
+            <tr>
+              <td class="cmd-cell">docker-compose down</td>
+              <td>Dừng và gỡ bỏ toàn bộ container, giúp hạ nhiệt hệ thống và tiết kiệm RAM.</td>
+            </tr>
+            <tr>
+              <td class="cmd-cell">docker-compose logs -f backend</td>
+              <td>Xem log thời gian thực của FastAPI backend để kiểm tra các tính toán toán học.</td>
+            </tr>
+            <tr>
+              <td class="cmd-cell">docker-compose restart frontend</td>
+              <td>Khởi động lại giao diện Next.js mà không làm gián đoạn backend.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 2rem;">Liên Kết Hữu Ích</h3>
+        <ul class="link-list">
+          <li>
+            <i data-lucide="link" style="color: var(--accent); width: 16px;"></i>
+            <a href="https://docs.docker.com/" target="_blank">Tài liệu tham khảo Docker Compose</a>
+          </li>
+          <li>
+            <i data-lucide="link" style="color: var(--accent); width: 16px;"></i>
+            <a href="https://fastapi.tiangolo.com/" target="_blank">Trang chủ FastAPI (Python Web Framework)</a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2026 AquaSTEM Project - Giáo dục STEM tích hợp IoT &amp; Phương Trình Vi Phân.</p>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTopBtn" aria-label="Cuộn lên đầu trang">
+    <i data-lucide="arrow-up"></i>
+  </button>
+
+  <!-- JavaScript for Interactive UI -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // 1. Hamburger Menu Toggle for Mobile
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    function toggleSidebar() {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('show');
+      const isOpen = sidebar.classList.contains('open');
+      hamburgerBtn.innerHTML = isOpen ? '<i data-lucide="x"></i>' : '<i data-lucide="menu"></i>';
+      lucide.createIcons();
+    }
+
+    hamburgerBtn.addEventListener('click', toggleSidebar);
+    overlay.addEventListener('click', toggleSidebar);
+
+    // Close sidebar when clicking on a nav link on mobile
+    const navLinks = document.querySelectorAll('.nav-item a');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+          toggleSidebar();
+        }
+      });
+    });
+
+    // 2. Smooth Scroll & Active Nav Spy
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.scrollY + 100;
+      const sections = document.querySelectorAll('.section');
+      
+      // Update active nav link based on scroll position
+      sections.forEach(section => {
+        if (scrollPos >= section.offsetTop && scrollPos < (section.offsetTop + section.offsetHeight)) {
+          navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${section.id}`) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+
+      // Update Scroll Progress Bar
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById("progressBar").style.width = scrolled + "%";
+
+      // Show/Hide Back to Top button
+      const backToTopBtn = document.getElementById('backToTopBtn');
+      if (window.scrollY > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+
+    // Smooth Scroll back to top
+    document.getElementById('backToTopBtn').addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    // 3. Troubleshooting Accordion Toggle
+    function toggleAccordion(button) {
+      const item = button.parentElement;
+      const isOpen = item.classList.contains('open');
+      
+      // Close all other accordions (Optional, comment out if you want to keep multiple open)
+      document.querySelectorAll('.accordion-item').forEach(accItem => {
+        accItem.classList.remove('open');
+      });
+
+      // Toggle state of current item
+      if (!isOpen) {
+        item.classList.add('open');
+      }
+    }
+
+    // 4. Copy to Clipboard Utility
+    function copyCode(button) {
+      const codeBlock = button.parentElement.nextElementSibling;
+      const textToCopy = codeBlock.textContent;
+
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        // Change button layout to show copied status
+        button.classList.add('copied');
+        button.innerHTML = '<i data-lucide="check" style="width:12px;height:12px;"></i> <span>Copied!</span>';
+        lucide.createIcons();
+
+        // Restore default layout after 2 seconds
+        setTimeout(() => {
+          button.classList.remove('copied');
+          button.innerHTML = '<i data-lucide="copy" style="width:12px;height:12px;"></i> <span>Copy</span>';
+          lucide.createIcons();
+        }, 2000);
+      }).catch(err => {
+        console.error('Không thể sao chép code: ', err);
+      });
+    }
+  </script>
+</body>
+</html>
