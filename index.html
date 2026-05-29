@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
@@ -310,15 +310,15 @@
             <h4 style="margin-top: 10px; margin-bottom: 6px; font-size: 0.95rem; color: var(--text-primary);">Cách 1: Tải trực tiếp tệp nén ZIP từ Google Drive (Khuyên dùng cho người mới bắt đầu)</h4>
             <p>Tải toàn bộ thư mục dự án qua liên kết dưới đây:</p>
             <p style="margin-bottom: 12px; margin-top: 8px;">
-              <a href="https://drive.google.com/file/d/1YOsSQECmF0HU_8v7torX70ZvrpJ5sGgB/view?usp=sharing" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 600; background: rgba(2, 132, 199, 0.08); padding: 8px 16px; border-radius: var(--radius-sm); border: 1px dashed var(--accent); color: var(--accent); transition: all 0.2s;">
+              <a href="https://drive.google.com/drive/folders/1wJJ9FfLq_LG4tZwbrGRbW6VJxhnZ-fJU?usp=sharing" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 600; background: rgba(2, 132, 199, 0.08); padding: 8px 16px; border-radius: var(--radius-sm); border: 1px dashed var(--accent); color: var(--accent); transition: all 0.2s;">
                 <i data-lucide="hard-drive" style="width:16px;height:16px;"></i>
                 <span>Tải tệp ZIP dự án từ Google Drive</span>
               </a>
             </p>
             <p>Sau khi tải về, hãy nhấp chuột phải vào file ZIP -> Chọn <strong>Extract All...</strong> (Giải nén tất cả) để đưa các file mã nguồn ra một thư mục thường trên ổ đĩa máy tính (ví dụ: ổ <code>D:</code> hoặc <code>C:</code>).</p>
             
-            <h4 style="margin-top: 18px; margin-bottom: 6px; font-size: 0.95rem; color: var(--text-primary);">TẠM THỜI DÙNG CÁCH 1 CHO ANH NHÉ, CÁCH 2 PHẢI HƯỚNG DẪN 1 CHÚT ĐỨA NÀO RẢNH TỰ NGHIÊN CỨU ĐC THÌ TỐT
-              <br>Cách 2: Tải bằng lệnh Git Clone (Nếu bạn đã có kinh nghiệm sử dụng Git).  </h4>
+            <h4 style="margin-top: 18px; margin-bottom: 6px; font-size: 0.95rem; color: var(--text-primary);">
+              <br>Cách 2: Tải bằng lệnh Git Clone (Khuyến khích nếu bạn muốn hiểu chuyên sâu hơn về lập trình, về Git).  </h4>
             <p>Mở PowerShell thường, di chuyển tới thư mục muốn lưu dự án và chạy các dòng lệnh sau:</p>
             <div class="code-block">
               <div class="code-header">
@@ -363,12 +363,12 @@ cd ptvp</pre>
                   <span>Copy</span>
                 </button>
               </div>
-              <pre>docker-compose up -d --build</pre>
+              <pre>docker compose up -d --build</pre>
             </div>
 
             <div class="alert warning">
               <div class="alert-title">
-                <i data-lucide="clock" style="width:18px;height:18px;"></i>
+                <i data-lucide="clock" style="width: 18px; height: 18px;"></i>
                 Lưu ý quan trọng về thời gian tải lần đầu
               </div>
               Lần đầu tiên chạy lệnh này, Docker sẽ cần tải các gói cài đặt cơ sở từ Internet (~2-3GB) nên sẽ mất khoảng <strong>5 đến 15 phút</strong> tùy thuộc vào tốc độ mạng của bạn. Các lần khởi chạy sau sẽ chỉ mất khoảng vài giây. Hãy kiên nhẫn chờ đến khi cửa sổ Terminal ngừng chạy chữ và hiển thị trạng thái hoàn tất thành công.
@@ -418,9 +418,9 @@ cd ptvp</pre>
       <div class="section-header">
         <h2>
           <span class="section-number">5</span>
-          Kết Nối Phần Cứng ESP32
+          Kết Nối Phần Cứng ESP32 &amp; Kiến Trúc IoT
         </h2>
-        <p class="section-desc">Cấu hình kết nối mạch ESP32 với máy tính và các lưu ý kỹ thuật khi sử dụng nguồn điện áp thấp dưới 5V.</p>
+        <p class="section-desc">Cấu hình kết nối ESP32 qua cáp USB và duy trì kiến trúc Event-driven bằng MQTT bên trong Docker.</p>
       </div>
 
       <div class="card">
@@ -428,50 +428,242 @@ cd ptvp</pre>
         <div class="alert note">
           <div class="alert-title">
             <i data-lucide="info" style="width: 18px; height: 18px;"></i>
-            Thông tin kỹ thuật an toàn điện áp thấp
+            An toàn điện áp thấp
           </div>
           <ul style="margin-left: 20px;">
-            <li><strong>Nguồn cấp an toàn:</strong> Dự án sử dụng hoàn toàn nguồn điện áp thấp dưới 5V cấp trực tiếp qua cổng USB máy tính, tuyệt đối an toàn cho học sinh và người sử dụng.</li>
-            <li><strong>Tránh sụt áp &amp; đo sai lệch:</strong> Các cảm biến đo đạc (như đo pH, nhiệt độ, độ đục) nên được cấp nguồn ổn định đúng chân 5V/3V3 trên bo mạch ESP32 để đảm bảo độ chính xác của chỉ số.</li>
-            <li><strong>Tránh đoản mạch:</strong> Khi cắm dây nối các thiết bị đo, hãy đảm bảo các chân kim hoặc đầu nối không chạm chập trực tiếp vào nhau khi mạch đang chạy.</li>
+            <li><strong>Nguồn cấp an toàn:</strong> ESP32 chạy hoàn toàn dưới 5V qua USB, an toàn cho người dùng và học sinh.</li>
+            <li><strong>Ổn định cảm biến:</strong> Cấp đúng chân 5V/3V3 để tránh sụt áp làm sai số đo.</li>
+            <li><strong>Chống đoản mạch:</strong> Không để các đầu nối chạm nhau khi đang cấp nguồn.</li>
           </ul>
         </div>
 
-        <h3 style="margin-top: 2rem;">2. Kết Nối ESP32 Vào Cổng COM3</h3>
-        <p>Do code firmware đã được nạp sẵn vào vi điều khiển ESP32, bạn không cần cài đặt Arduino IDE hay nạp lại code nữa. Hãy tiến hành cắm mạch vào cổng <strong>COM3</strong> trên máy tính theo hướng dẫn sau:</p>
-        
-        <ol style="margin-left: 20px; color: var(--text-secondary); line-height: 1.8;">
-          <li style="margin-bottom: 10px;">
-            <strong>Cắm kết nối phần cứng:</strong> Dùng cáp Micro-USB hoặc Type-C kết nối cổng USB của bo mạch ESP32 với cổng USB trên máy tính.
-          </li>
-          <li style="margin-bottom: 10px;">
-            <strong>Kiểm tra cổng kết nối (Device Manager):</strong>
-            <ul>
-              <li>Nhấp chuột phải vào nút <strong>Start</strong> (hoặc nhấn tổ hợp phím <code>Windows + X</code>) -> Chọn <strong>Device Manager</strong>.</li>
-              <li>Tìm nhóm thiết bị <strong>Ports (COM &amp; LPT)</strong> và mở rộng ra. Bạn sẽ thấy thiết bị có tên dạng <code>Silicon Labs CP210x USB to UART Bridge</code> hoặc <code>USB-SERIAL CH340</code> đi kèm số cổng COM ở cuối.</li>
-            </ul>
-          </li>
-          <li style="margin-bottom: 10px;">
-            <strong>Cấu hình đổi tên cổng thành COM3 (nếu cổng nhận diện khác COM3):</strong>
-            <p style="margin-top: 5px; margin-bottom: 5px;">Nếu máy tính nhận diện là cổng khác (ví dụ: COM4, COM5...), bạn cần đổi về <strong>COM3</strong> để tương thích với cấu hình mặc định của hệ thống:</p>
-            <ol style="list-style-type: lower-alpha; margin-left: 20px;">
-              <li>Nhấp chuột phải vào tên cổng COM đó trong Device Manager -> Chọn <strong>Properties</strong>.</li>
-              <li>Chọn tab <strong>Port Settings</strong> -> Nhấp vào nút <strong>Advanced...</strong> ở bên dưới.</li>
-              <li>Tại mục <strong>COM Port Number</strong>, nhấp chọn từ danh sách thả xuống cổng <strong>COM3</strong>.</li>
-              <li>Nhấn <strong>OK</strong> để lưu cấu hình.</li>
-            </ol>
-          </li>
-        </ol>
+        <h3 style="margin-top: 2rem;">2. Kiến Trúc Hệ Thống Mới (Ưu tiên)</h3>
+        <p>Mô hình giữ kiến trúc Event-driven qua MQTT nhưng loại bỏ phụ thuộc Wi-Fi cấu hình phức tạp, vẫn chạy đồng nhất nhờ Docker.</p>
 
-        <div class="alert success" style="margin-top: 1.5rem;">
+        <div class="alert success" style="margin-top: 10px; margin-bottom: 12px;">
+          <div class="alert-title">
+            <i data-lucide="route" style="width: 18px; height: 18px;"></i>
+            Luồng dữ liệu chuẩn hóa
+          </div>
+          <div style="font-family: var(--font-code); font-size: 0.86rem; background: #f8fafc; padding: 10px; border-radius: var(--radius-sm);">
+            [ESP32] --(USB/COM)--> [Python Bridge] --(localhost:1883)--> [MQTT Broker (Docker)] --(Subscribe)--> [Backend]
+          </div>
+        </div>
+
+        <div class="alert note" style="margin-top: 12px;">
+          <div class="alert-title">
+            <i data-lucide="thumbs-up" style="width: 18px; height: 18px;"></i>
+            Ưu điểm nổi bật
+          </div>
+          <ul style="margin-left: 20px;">
+            <li><strong>Không bị giới hạn khoảng cách:</strong> Có thể đặt ESP32 ở xa khi dùng Wi-Fi hoặc gateway.</li>
+            <li><strong>Hỗ trợ đa thiết bị (Scalability):</strong> Nhiều node cảm biến cùng publish về một Broker.</li>
+            <li><strong>Môi trường đồng nhất nhờ Docker:</strong> Broker chạy ổn định, dễ nhân bản và triển khai.</li>
+          </ul>
+        </div>
+
+        <h3 style="margin-top: 2rem;">3. Thiết Lập Môi Trường</h3>
+        <ul style="margin-left: 20px;">
+          <li><strong>Bật Virtualization trong BIOS</strong>, sau đó bật <strong>WSL 2</strong> và <strong>Virtual Machine Platform</strong> trong Windows Features.</li>
+          <li><strong>Cập nhật WSL</strong> bằng PowerShell (Admin):</li>
+        </ul>
+        <div class="code-block" style="margin-top: 6px; margin-bottom: 12px;">
+          <div class="code-header">
+            <span class="code-lang">powershell (admin)</span>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i data-lucide="copy" style="width:12px;height:12px;"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre>wsl --update
+wsl --shutdown</pre>
+        </div>
+
+        <ul style="margin-left: 20px;">
+          <li><strong>Khởi chạy hạ tầng Docker</strong> tại thư mục dự án:</li>
+        </ul>
+        <div class="code-block" style="margin-top: 6px; margin-bottom: 12px;">
+          <div class="code-header">
+            <span class="code-lang">terminal (VS Code)</span>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i data-lucide="copy" style="width:12px;height:12px;"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre>docker compose up -d</pre>
+        </div>
+
+        <div class="alert note" style="margin-top: 10px;">
+          <div class="alert-title">
+            <i data-lucide="info" style="width: 18px; height: 18px;"></i>
+            Ghi chú
+          </div>
+          MQTT Broker chạy tại <code>localhost:1883</code> ngay sau khi Docker khởi chạy thành công.
+        </div>
+
+        <h3 style="margin-top: 2rem;">4. Hướng Dẫn Cấu Hình Kết Nối</h3>
+
+        <h4 style="color: var(--text-primary); font-size: 1.05rem; margin-top: 1.2rem; margin-bottom: 0.5rem;">
+          Cách 1 (Ưu tiên) - MQTT Client trỏ về IP máy tính :1883
+        </h4>
+        <p>ESP32 publish trực tiếp lên MQTT Broker chạy trong Docker. Trong firmware, thay <code>Serial.println()</code> bằng lệnh publish MQTT và trỏ Broker về IP máy tính.</p>
+        <div class="code-block" style="margin-top: 8px; margin-bottom: 12px;">
+          <div class="code-header">
+            <span class="code-lang">cpp (ESP32 config)</span>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i data-lucide="copy" style="width:12px;height:12px;"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre>// Thay IP_MAY_TINH bằng IP LAN của máy chạy Docker
+const char* MQTT_BROKER = "IP_MAY_TINH";
+const int MQTT_PORT = 1883;
+const char* MQTT_TOPIC = "aquastem/sensors";</pre>
+        </div>
+        <div class="alert note" style="margin-top: 8px;">
           <div class="alert-title">
             <i data-lucide="check-circle" style="width: 18px; height: 18px;"></i>
-            Hệ thống đã sẵn sàng vận hành!
+            Note
           </div>
-          Khi được cấp nguồn và nhận đúng cổng <strong>COM3</strong>, bo mạch ESP32 sẽ tự động chạy code đã nạp trước đó, thực hiện kết nối Wi-Fi, gửi các thông số cảm biến (pH, nhiệt độ, độ đục) lên Dashboard hiển thị thời gian thực.
+          Cách này phù hợp khi ESP32 đã có Wi-Fi, không cần bridge Serial.
         </div>
-      </div>
+
+        <h4 style="color: var(--text-primary); font-size: 1.05rem; margin-top: 1.6rem; margin-bottom: 0.5rem;">
+          Cách 2 - USB/COM + Python Bridge
+        </h4>
+        <p>Dùng khi không muốn cấu hình Wi-Fi cho ESP32. Script sẽ đọc COM và publish lên Broker.</p>
+        <div class="code-block" style="margin-top: 8px; margin-bottom: 16px;">
+          <div class="code-header">
+            <span class="code-lang">python (pyserial + paho-mqtt)</span>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i data-lucide="copy" style="width:12px;height:12px;"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre>import json
+import time
+import serial
+import paho.mqtt.client as mqtt
+
+SERIAL_PORT = "COM3"
+SERIAL_BAUD = 115200
+
+MQTT_BROKER = "localhost"
+MQTT_PORT = 1883
+MQTT_TOPIC = "aquastem/sensors"
+
+def connect_serial():
+    while True:
+        try:
+            return serial.Serial(SERIAL_PORT, SERIAL_BAUD, timeout=1)
+        except serial.SerialException:
+            print(f"⏳ Chưa mở được {SERIAL_PORT}. Đang thử lại...")
+            time.sleep(2)
+
+def on_connect(client, userdata, flags, rc):
+    if rc == 0:
+        print("✅ Đã kết nối MQTT Broker.")
+    else:
+        print(f"❌ Lỗi kết nối MQTT, mã lỗi: {rc}")
+
+def main():
+    client = mqtt.Client()
+    client.on_connect = on_connect
+    client.connect(MQTT_BROKER, MQTT_PORT, 60)
+    client.loop_start()
+
+    ser = connect_serial()
+    print(f"🔌 Đang đọc dữ liệu từ {SERIAL_PORT}...")
+
+    while True:
+        try:
+            line = ser.readline().decode("utf-8").strip()
+            if not line:
+                continue
+            data = json.loads(line)
+            payload = json.dumps(data, ensure_ascii=False)
+            client.publish(MQTT_TOPIC, payload)
+            print(f"📤 Publish: {payload}")
+        except json.JSONDecodeError:
+            print("⚠️ Dữ liệu không đúng định dạng JSON, bỏ qua.")
+        except serial.SerialException:
+            print("⚠️ Mất kết nối Serial, đang kết nối lại...")
+            ser = connect_serial()
+        except KeyboardInterrupt:
+            print("\n👋 Đã dừng script cầu nối.")
+            break
+
+if __name__ == "__main__":
+    main()</pre>
+        </div>
+
+        <div class="alert warning" style="margin-top: 10px;">
+          <div class="alert-title">
+            <i data-lucide="alert-triangle" style="width: 18px; height: 18px;"></i>
+            Lưu ý cổng COM
+          </div>
+          Nếu máy bạn hiển thị cổng khác (ví dụ COM4/COM5), hãy đổi biến <code>SERIAL_PORT</code> trong script.
+        </div>
+
+        <h4 style="color: var(--text-primary); font-size: 1.05rem; margin-top: 1.6rem; margin-bottom: 0.5rem;">
+          Cách 3 - Wi-Fi + MQTT (Tuỳ chọn)
+        </h4>
+        <p>Phù hợp khi cần triển khai nhiều node không dây trong cùng mạng LAN. ESP32 publish trực tiếp lên Broker tại <code>IP_MAY_TINH:1883</code>.</p>
+
+        <h4 style="color: var(--text-primary); font-size: 1.05rem; margin-top: 1.6rem; margin-bottom: 0.5rem;">
+          Backend Subscribe MQTT (Giữ nguyên code)
+        </h4>
+        <p>Backend kết nối thẳng vào <code>localhost:1883</code> để subscribe dữ liệu, không cần thư viện đọc cổng COM (như <code>pyserial</code>).</p>
+
+        <div class="code-block" style="margin-top: 8px; margin-bottom: 16px;">
+          <div class="code-header">
+            <span class="code-lang">python (paho-mqtt)</span>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <i data-lucide="copy" style="width:12px;height:12px;"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre>import json
+import paho.mqtt.client as mqtt
+
+MQTT_BROKER = "localhost"
+MQTT_PORT = 1883
+MQTT_TOPIC = "aquastem/sensors"
+
+def on_connect(client, userdata, flags, rc):
+    if rc == 0:
+        print("✅ Kết nối thành công tới MQTT Broker!")
+        client.subscribe(MQTT_TOPIC)
+        print(f"📡 Đang lắng nghe dữ liệu từ Topic: {MQTT_TOPIC}")
+    else:
+        print(f"❌ Kết nối thất bại, mã lỗi: {rc}")
+
+def on_message(client, userdata, msg):
+    try:
+        payload = msg.payload.decode("utf-8")
+        data = json.loads(payload)
+        print("\n📥 Nhận thông số cảm biến mới:")
+        print(f"  - Độ pH: {data.get('ph')}")
+        print(f"  - Nhiệt độ: {data.get('temperature')} °C")
+        print(f"  - Độ đục: {data.get('turbidity')} NTU")
+    except Exception as e:
+        print(f"❌ Lỗi xử lý bản tin JSON: {e}")
+
+client = mqtt.Client()
+client.on_connect = on_connect
+client.on_message = on_message
+
+try:
+    print(f"🔄 Đang kết nối tới MQTT Broker tại {MQTT_BROKER}:{MQTT_PORT}...")
+    client.connect(MQTT_BROKER, MQTT_PORT, 60)
+    client.loop_forever()
+except KeyboardInterrupt:
+    print("\n👋 Đã tắt dịch vụ lắng nghe MQTT.")
+except Exception as e:
+    print(f"❌ Lỗi hệ thống: {e}")</pre>
+        </div>
     </section>
+
 
     <!-- Section 6: Xử Lý Lỗi & Tham Khảo -->
     <section id="section-6" class="section">
@@ -557,19 +749,19 @@ cd ptvp</pre>
           </thead>
           <tbody>
             <tr>
-              <td class="cmd-cell">docker-compose up -d --build</td>
+              <td class="cmd-cell">docker compose up -d --build</td>
               <td>Khởi chạy toàn bộ hệ thống AquaSTEM ngầm và tự động cập nhật code mới.</td>
             </tr>
             <tr>
-              <td class="cmd-cell">docker-compose down</td>
+              <td class="cmd-cell">docker compose down</td>
               <td>Dừng và gỡ bỏ toàn bộ container, giúp hạ nhiệt hệ thống và tiết kiệm RAM.</td>
             </tr>
             <tr>
-              <td class="cmd-cell">docker-compose logs -f backend</td>
+              <td class="cmd-cell">docker compose logs -f backend</td>
               <td>Xem log thời gian thực của FastAPI backend để kiểm tra các tính toán toán học.</td>
             </tr>
             <tr>
-              <td class="cmd-cell">docker-compose restart frontend</td>
+              <td class="cmd-cell">docker compose restart frontend</td>
               <td>Khởi động lại giao diện Next.js mà không làm gián đoạn backend.</td>
             </tr>
           </tbody>
@@ -688,7 +880,23 @@ cd ptvp</pre>
       }
     }
 
-    // 4. Copy to Clipboard Utility
+    // 4. Tab Switching for Hardware Setup
+    function switchHardwareTab(tabId, button) {
+      // Hide all hardware tab contents
+      document.querySelectorAll('.hardware-tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      // Deactivate all hardware tab buttons
+      document.querySelectorAll('.hardware-tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      // Show selected content
+      document.getElementById(tabId).classList.add('active');
+      // Activate clicked button
+      button.classList.add('active');
+    }
+
+    // 5. Copy to Clipboard Utility
     function copyCode(button) {
       const codeBlock = button.parentElement.nextElementSibling;
       const textToCopy = codeBlock.textContent;
